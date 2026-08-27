@@ -1,0 +1,533 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>나의 성경 — John 1–6</title>
+<style>@import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700&family=Noto+Sans:wght@400;600&family=Noto+Sans+KR:wght@400;600&display=swap');
+:root{
+  --bg:#faf9f6;--card:#fff;--text:#171717;--muted:#696969;--line:#e7e2d9;
+  --noun:#1565c0;--verb:#c62828;--life:#2e7d32;--scale:1
+}
+body.dark{--bg:#111;--card:#1b1b1b;--text:#f5f5f5;--muted:#b7b7b7;--line:#303030}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
+header{position:sticky;top:0;z-index:8;background:color-mix(in srgb,var(--bg) 94%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.top{max-width:840px;margin:auto;padding:10px 14px;display:flex;justify-content:space-between;align-items:center}
+.eyebrow{font-size:.76rem;letter-spacing:.12em;color:var(--muted)}
+h1{font-size:1.3rem;margin:2px 0}
+button{background:var(--card);color:var(--text);border:1px solid var(--line);border-radius:10px;padding:8px 11px;cursor:pointer}
+.chapterbar{max-width:840px;margin:auto;padding:0 14px 10px;display:flex;gap:7px;overflow:auto}
+.chapter-btn.active{font-weight:750;border-color:var(--text)} #chapterSpeak{margin-right:4px}
+main{max-width:840px;margin:auto;padding:14px}
+.controls{display:flex;gap:12px;flex-wrap:wrap;align-items:center;color:var(--muted);font-size:.9rem;padding:3px 0 12px}
+.legend{display:flex;gap:13px;flex-wrap:wrap;font-size:.82rem;color:var(--muted);margin:0 0 14px}
+.legend b:nth-child(1){color:var(--noun)} .legend b:nth-child(2){color:var(--verb)} .legend b:nth-child(3){color:var(--life)}
+.verse{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px;margin-bottom:14px}
+.num{font-size:.78rem;color:var(--muted);margin-bottom:8px;display:flex;justify-content:space-between;align-items:center}
+.verse-speak{font-size:.82rem;padding:5px 9px;border-radius:999px}
+.greek{font-family:"Palatino Linotype","Book Antiqua","Times New Roman","Segoe UI Historic",serif;font-size:calc(1.56rem * var(--scale));font-weight:600;line-height:1.62;letter-spacing:0}
+.greek .word{cursor:pointer;border-radius:4px;padding:0 .02em}
+.greek .noun{color:var(--noun);font-weight:700}
+.greek .verb{color:var(--verb);font-weight:700}
+.greek .life{color:var(--life)!important;font-weight:750}
+.pron{font-family:"Nanum Gothic","Malgun Gothic",sans-serif;font-size:calc(0.92rem * var(--scale));font-weight:400;line-height:1.5;margin-top:5px;color:var(--muted)}
+.ko{font-family:"Source Han Sans K","본고딕","Noto Sans KR","Malgun Gothic",sans-serif;font-size:calc(1.05rem * var(--scale));font-weight:400;line-height:1.65;margin-top:6px}
+.en{font-family:"Noto Sans","Noto Sans KR",sans-serif;font-size:calc(1rem * var(--scale));line-height:1.55;color:var(--text);font-weight:600;font-style:normal;margin-top:4px}
+.hide-ko .pron,.hide-ko .ko{font-family:"Source Han Sans K","본고딕","Noto Sans KR","Malgun Gothic",sans-serif;font-size:calc(1.05rem * var(--scale));font-weight:400;line-height:1.65;margin-top:6px}.hide-en .en{font-family:"Noto Sans","Noto Sans KR",sans-serif;font-size:calc(1rem * var(--scale));line-height:1.55;color:var(--text);font-weight:600;font-style:normal;margin-top:4px}
+.loading,.error{padding:28px;text-align:center;color:var(--muted)}
+.variant{border-style:dashed;background:color-mix(in srgb,var(--card) 92%,#f3e5ab 8%)}
+.variant-label{display:inline-block;font-size:.76rem;font-weight:700;padding:4px 8px;border-radius:999px;background:#fff3cd;color:#7a5a00;border:1px solid #ead58c;margin-bottom:9px}
+.variant-note{font-size:.92rem;line-height:1.6;color:var(--muted);margin-top:7px}
+
+.source{font-size:.76rem;line-height:1.5;color:var(--muted);text-align:center;padding:10px 8px 26px}
+#popup{position:fixed;inset:0;display:none;align-items:flex-end;justify-content:center;background:rgba(0,0,0,.30);z-index:30}
+#popup.show{display:flex}
+.popup-card{width:min(740px,100%);background:var(--card);border:1px solid var(--line);border-radius:18px 18px 0 0;padding:20px;box-shadow:0 -10px 34px rgba(0,0,0,.2)}
+.popup-greek{font-family:"Palatino Linotype","Book Antiqua","Times New Roman",serif;font-size:2rem;font-weight:700}
+.popup-ko{font-family:"Nanum Gothic","Malgun Gothic",sans-serif;font-size:1.08rem;margin-top:5px}
+.popup-line{margin-top:5px;color:var(--muted)}
+.popup-close{float:right}
+.pos-n{color:var(--noun);font-weight:700}.pos-v{color:var(--verb);font-weight:700}.pos-life{color:var(--life);font-weight:700}
+@media(max-width:520px){.verse{padding:15px}.controls{font-size:.83rem}.greek{line-height:1.58}}
+</style>
+</head>
+<body>
+<header>
+  <div class="top">
+    <div><div class="eyebrow">ΚΑΤΑ ΙΩΑΝΝΗΝ</div><h1 id="title">John 1</h1></div>
+    <button onclick="document.body.classList.toggle('dark')" aria-label="dark mode">◐</button>
+  </div>
+  <div class="chapterbar"><button id="chapterSpeak" class="chapter-btn" onclick="speakChapter()">🔊 Read chapter</button>
+    <button class="chapter-btn active" data-ch="1" onclick="showChapter(1)">John 1</button>
+    <button class="chapter-btn" data-ch="2" onclick="showChapter(2)">John 2</button>
+    <button class="chapter-btn" data-ch="3" onclick="showChapter(3)">John 3</button>
+    <button class="chapter-btn" data-ch="4" onclick="showChapter(4)">John 4</button>
+    <button class="chapter-btn" data-ch="5" onclick="showChapter(5)">John 5</button>
+    <button class="chapter-btn" data-ch="6" onclick="showChapter(6)">John 6</button>
+  </div>
+</header>
+<main>
+  <div class="controls">
+    <label><input type="checkbox" checked onchange="document.body.classList.toggle('hide-ko',!this.checked)"> 한글/한국어</label>
+    <label><input type="checkbox" checked onchange="document.body.classList.toggle('hide-en',!this.checked)"> English</label>
+    <label>글자 <input type="range" min="90" max="150" value="100" oninput="document.documentElement.style.setProperty('--scale',this.value/100)"></label>
+  </div>
+  <div class="legend"><span><b>■ 명사</b> 파랑</span><span><b>■ 동사</b> 빨강</span><span><b>■ 생명 계열</b> 녹색 우선</span></div>
+  <div id="reader"><div class="loading">John 1을 불러오는 중…</div></div>
+  <div class="source">Greek morphology/text: MorphGNT SBLGNT · Korean pronunciation: 1st-century Koine study approximation · Korean: 나의 성경 원문 직역 · English: World English Bible (public domain)<br>색상: Noun=Blue · Verb=Red · ζωή/ζάω 계열=Green priority<br>Strong’s mapping: greek-lemma-mappings (CC BY-SA 4.0) · Strong’s Greek Dictionary XML (CC0)<br>Verse-number gaps are checked against the SBLGNT/MorphGNT main text and shown as textual variants rather than left blank.</div>
+</main>
+
+<div id="popup" onclick="if(event.target===this)closePopup()">
+  <div class="popup-card">
+    <button class="popup-close" onclick="closePopup()">닫기</button>
+    <div id="pgreek" class="popup-greek"></div>
+    <div id="pko" class="popup-ko"></div>
+    <div id="penglish" class="popup-line"></div>
+    <div id="ppos" class="popup-line"></div>
+    <div id="pparse" class="popup-line"></div>
+    <div id="plemma" class="popup-line"></div><div id="pstrong" class="popup-line"><b>Strong’s:</b> <span id="pstrongnum">loading…</span></div><div id="pstrongdef" class="popup-line"></div><div id="pcontext" class="popup-line"></div><div id="prenderings" class="popup-line"></div>
+    <button style="margin-top:12px" onclick="speakGreekWord()">🔊 단어 발음</button>
+  </div>
+</div>
+
+<script>
+const MORPH_URL='https://raw.githubusercontent.com/morphgnt/sblgnt/master/64-Jn-morphgnt.txt';
+
+const STRONG_MAP_URL='https://raw.githubusercontent.com/jtauber/greek-lemma-mappings/master/strongs_mapping.yaml';
+const STRONG_XML_URL='https://raw.githubusercontent.com/morphgnt/strongs-dictionary-xml/master/strongsgreek.xml';
+let strongLemmaMap=null,strongXmlDoc=null;
+function lemmaKey(x){return stripGreekMarks(x).replace(/\s+/g,'').toLowerCase()}
+async function loadStrongMap(){
+ if(strongLemmaMap)return strongLemmaMap;
+ const txt=await fetch(STRONG_MAP_URL).then(r=>{if(!r.ok)throw Error('Strong map');return r.text()});
+ const m=new Map(); let num='';
+ for(const line of txt.split(/\r?\n/)){
+   let a=line.match(/^(\d+):\s*$/); if(a){num=a[1];continue}
+   let b=line.match(/^\s*-\s*(.+?)\s*$/); if(b&&num)m.set(lemmaKey(b[1]),num);
+ }
+ strongLemmaMap=m;return m;
+}
+async function strongNumber(lemma){
+ const m=await loadStrongMap();return m.get(lemmaKey(lemma))||'';
+}
+async function loadStrongXml(){
+ if(strongXmlDoc)return strongXmlDoc;
+ const txt=await fetch(STRONG_XML_URL).then(r=>{if(!r.ok)throw Error('Strong dictionary');return r.text()});
+ strongXmlDoc=new DOMParser().parseFromString(txt,'application/xml');return strongXmlDoc;
+}
+async function strongEntry(num){
+ if(!num)return null;
+ const doc=await loadStrongXml();
+ const key=String(num).padStart(5,'0');
+ const entry=[...doc.getElementsByTagName('entry')].find(e=>e.getAttribute('strongs')===key);
+ if(!entry)return null;
+ const def=entry.getElementsByTagName('strongs_def')[0]?.textContent?.replace(/\s+/g,' ').trim()||'';
+ const kjv=entry.getElementsByTagName('kjv_def')[0]?.textContent?.replace(/\s+/g,' ').trim()||'';
+ const pron=entry.getElementsByTagName('pronunciation')[0]?.getAttribute('strongs')||'';
+ return {def,kjv,pron};
+}
+async function fillStrong(lemma){
+ const numEl=document.getElementById('pstrongnum'),defEl=document.getElementById('pstrongdef');
+ numEl.textContent='loading…';defEl.textContent='';document.getElementById('pcontext').textContent='';document.getElementById('prenderings').textContent='';
+ try{
+   const num=await strongNumber(lemma);
+   if(!num){numEl.textContent='—';showLexicalContext(lemma,'');return}
+   numEl.textContent='G'+num;
+   const e=await strongEntry(num);
+   if(e){
+     const cleaned=cleanStrongDef(e.def||'');
+     defEl.innerHTML='<b>Basic meaning:</b><br>'+escapeHtml(cleaned||'—');
+     showLexicalContext(lemma,cleaned);
+   }
+ }catch(err){numEl.textContent='unavailable';showLexicalContext(lemma,'')}
+}
+
+const LIFE_LEMMAS=new Set(['ζωή','ζάω','ζωοποιέω']);
+const KOREAN={"1":{"1":"태초에 말씀이 계셨고, 말씀은 하나님과 함께 계셨으며, 말씀은 하나님이셨다.","2":"그분은 태초에 하나님과 함께 계셨다.","3":"모든 것이 그분을 통하여 생겨났고, 생겨난 것 가운데 그분 없이 생겨난 것은 하나도 없다.","4":"그분 안에 생명이 있었고, 그 생명은 사람들의 빛이었다.","5":"그 빛이 어둠 속에 비치고 있으나, 어둠은 그것을 이기지 못했다.","6":"하나님께로부터 보내심을 받은 한 사람이 있었는데, 그의 이름은 요한이었다.","7":"그는 증언하러 왔다. 곧 빛에 관하여 증언하여 모든 사람이 그를 통하여 믿게 하려는 것이었다.","8":"그는 그 빛이 아니었고, 그 빛에 관하여 증언하러 왔다.","9":"참빛, 곧 세상에 와서 모든 사람을 비추는 빛이 있었다.","10":"그분은 세상에 계셨고 세상은 그분을 통하여 생겨났으나, 세상은 그분을 알지 못했다.","11":"그분은 자기에게 속한 곳에 오셨으나, 자기 백성은 그분을 받아들이지 않았다.","12":"그러나 그분을 받아들인 모든 사람, 곧 그분의 이름을 믿는 사람들에게는 하나님의 자녀가 되는 권리를 주셨다.","13":"그들은 혈통으로나 육체의 뜻으로나 사람의 뜻으로 나지 않고 하나님께로부터 났다.","14":"말씀이 육체가 되어 우리 가운데 거하셨고, 우리는 그분의 영광을 보았다. 그것은 아버지께로부터 온 유일한 이의 영광이었으며, 은혜와 진리가 충만하였다.","15":"요한은 그분에 관하여 증언하며 외쳤다. “내가 말한 분이 바로 이분이다. 내 뒤에 오시는 분이 나보다 앞서신 것은 그분이 나보다 먼저 계셨기 때문이다.”","16":"그분의 충만에서 우리 모두가 받았으니, 은혜 위에 은혜이다.","17":"율법은 모세를 통하여 주어졌지만, 은혜와 진리는 예수 그리스도를 통하여 왔다.","18":"아무도 어느 때든 하나님을 본 적이 없다. 아버지 품에 계시는 유일하신 하나님께서 그분을 알려 주셨다.","19":"유대인들이 예루살렘에서 제사장들과 레위인들을 요한에게 보내어 “당신은 누구입니까?”라고 물었을 때의 요한의 증언은 이것이다.","20":"그는 숨기지 않고 분명히 고백하였다. “나는 그리스도가 아니다.”","21":"그들이 물었다. “그러면 누구입니까? 엘리야입니까?” 그가 “아니다”라고 하였다. “그 예언자입니까?” 그가 “아니다”라고 대답하였다.","22":"그러자 그들이 말했다. “당신은 누구입니까? 우리를 보낸 이들에게 대답할 수 있게 말해 주십시오. 당신 자신을 무엇이라고 합니까?”","23":"그가 말했다. “나는 예언자 이사야가 말한 대로, ‘주님의 길을 곧게 하라’고 광야에서 외치는 이의 소리이다.”","24":"보냄을 받은 사람들은 바리새인들에게서 온 사람들이었다.","25":"그들이 물었다. “당신이 그리스도도 아니고 엘리야도 아니며 그 예언자도 아니라면, 왜 침례를 줍니까?”","26":"요한이 대답하였다. “나는 물로 침례를 준다. 그러나 여러분 가운데 여러분이 알지 못하는 한 분이 서 계신다.","27":"그분은 내 뒤에 오시는 분이며, 나는 그분의 신발 끈을 풀 자격도 없다.”","28":"이 일들은 요한이 침례를 주고 있던 요단강 건너편 베다니에서 일어났다.","29":"다음 날 요한은 예수님께서 자기에게 오시는 것을 보고 말했다. “보라, 세상의 죄를 없애시는 하나님의 어린양이시다.","30":"이분이 바로 내가 ‘내 뒤에 한 분이 오시는데, 그분은 나보다 먼저 계셨으므로 나보다 앞서신 분이 되셨다’고 말한 분이다.","31":"나도 그분을 알지 못했다. 그러나 그분이 이스라엘에게 나타나시게 하려고 내가 물로 침례를 주러 왔다.”","32":"요한이 또 증언하였다. “나는 그 영께서 비둘기처럼 하늘에서 내려와 그분 위에 머무시는 것을 보았다.","33":"나도 그분을 알지 못했지만, 나를 보내 물로 침례를 주게 하신 분이 나에게 말씀하셨다. ‘그 영이 내려와 누구 위에 머무는 것을 보거든, 그가 바로 성령 안에서 침례를 주는 분이다.’","34":"나는 그것을 보았고, 이분이 하나님의 아들이심을 증언하였다.”","35":"다음 날 요한은 다시 자기 제자 두 사람과 함께 서 있었다.","36":"예수님께서 걸어가시는 것을 바라보고 그가 말했다. “보라, 하나님의 어린양이시다!”","37":"두 제자가 그 말을 듣고 예수님을 따라갔다.","38":"예수님께서 돌아서서 그들이 따라오는 것을 보시고 “무엇을 찾고 있느냐?”라고 물으셨다. 그들이 “랍비님, 어디에 머무십니까?”라고 하였다. 랍비는 번역하면 ‘선생님’이라는 뜻이다.","39":"예수님께서 “와서 보아라”라고 하셨다. 그들은 가서 그분이 머무시는 곳을 보고 그날 그분과 함께 머물렀다. 때는 대략 열째 시간이었다.","40":"요한의 말을 듣고 예수님을 따라간 두 사람 가운데 하나는 시몬 베드로의 형제 안드레였다.","41":"그는 먼저 자기 형제 시몬을 찾아 “우리가 메시아를 만났다”라고 말했다. 메시아는 번역하면 그리스도라는 뜻이다.","42":"그가 시몬을 예수님께 데려왔다. 예수님께서 그를 바라보시며 말씀하셨다. “너는 요한의 아들 시몬이다. 너는 게바라고 불릴 것이다.” 게바는 번역하면 베드로라는 뜻이다.","43":"다음 날 예수님께서는 갈릴리로 가려고 하셨다. 그분은 빌립을 만나 “나를 따라오너라”라고 말씀하셨다.","44":"빌립은 안드레와 베드로의 동네인 벳새다 출신이었다.","45":"빌립이 나다나엘을 찾아 말했다. “모세가 율법에 기록하였고 예언자들도 기록한 그분을 우리가 만났다. 요셉의 아들 나사렛 예수님이다.”","46":"나다나엘이 “나사렛에서 무슨 좋은 것이 나올 수 있겠는가?”라고 하자, 빌립이 “와서 보아라”라고 말했다.","47":"예수님께서 나다나엘이 자기에게 오는 것을 보시고 그에 관하여 말씀하셨다. “보라, 참으로 속임이 없는 이스라엘 사람이다.”","48":"나다나엘이 “어떻게 저를 아십니까?”라고 묻자 예수님께서 대답하셨다. “빌립이 너를 부르기 전에, 네가 무화과나무 아래에 있을 때 내가 너를 보았다.”","49":"나다나엘이 대답하였다. “랍비님, 선생님은 하나님의 아들이시며 이스라엘의 왕이십니다.”","50":"예수님께서 말씀하셨다. “내가 너를 무화과나무 아래에서 보았다고 해서 믿느냐? 너는 이것들보다 더 큰 일들을 보게 될 것이다.”","51":"또 말씀하셨다. “진실로 진실로 내가 너희에게 말한다. 너희는 하늘이 열리고 하나님의 천사들이 사람의 아들 위로 올라가고 내려오는 것을 보게 될 것이다.”"},"2":{"1":"셋째 날 갈릴리 가나에서 혼인잔치가 있었고, 예수님의 어머니도 거기에 계셨다.","2":"예수님과 그분의 제자들도 그 혼인잔치에 초대받았다.","3":"포도주가 떨어지자 예수님의 어머니가 그분께 “포도주가 없습니다”라고 말했다.","4":"예수님께서 말씀하셨다. “여인이여, 그것이 나와 당신에게 무슨 상관이 있습니까? 아직 내 때가 오지 않았습니다.”","5":"그분의 어머니가 하인들에게 말했다. “그분이 여러분에게 무엇을 말씀하시든 그대로 하십시오.”","6":"거기에는 유대인의 정결 예식에 쓰는 돌항아리 여섯 개가 놓여 있었는데, 각각 두세 메트레타씩 들어가는 것이었다.","7":"예수님께서 그들에게 “항아리들에 물을 채워라”라고 말씀하시자, 그들은 가득 채웠다.","8":"그분께서 “이제 떠서 잔치 책임자에게 가져가라”라고 하셨고, 그들은 가져갔다.","9":"잔치 책임자가 포도주가 된 그 물을 맛보고도 그것이 어디서 왔는지 알지 못했으나, 물을 떠 온 하인들은 알고 있었다. 잔치 책임자가 신랑을 불러","10":"말했다. “사람마다 먼저 좋은 포도주를 내고 사람들이 많이 마신 뒤에 덜 좋은 것을 내는데, 당신은 지금까지 좋은 포도주를 보관해 두었군요.”","11":"예수님께서 갈릴리 가나에서 이 일을 첫 표적으로 행하시고 자신의 영광을 나타내셨으며, 제자들이 그분을 믿었다.","12":"그 후 예수님께서는 어머니와 형제들과 제자들과 함께 가버나움으로 내려가셨고, 거기에서 며칠 머무르셨다.","13":"유대인의 유월절이 가까워지자 예수님께서 예루살렘으로 올라가셨다.","14":"성전 안에서 소와 양과 비둘기를 파는 사람들과 돈 바꾸는 사람들이 앉아 있는 것을 보셨다.","15":"그분은 끈으로 채찍을 만들어 양과 소를 포함하여 모두 성전에서 내쫓으시고, 돈 바꾸는 사람들의 동전을 쏟아 버리고 상을 뒤엎으셨다.","16":"비둘기를 파는 사람들에게 말씀하셨다. “이것들을 여기서 치워라. 내 아버지의 집을 장사하는 집으로 만들지 마라.”","17":"제자들은 “주의 집을 위한 열심이 나를 삼킬 것이다”라고 기록된 것을 기억하였다.","18":"그러자 유대인들이 그분께 말했다. “당신이 이런 일을 한다면 우리에게 무슨 표적을 보여 주겠습니까?”","19":"예수님께서 대답하셨다. “이 성전을 헐어라. 그러면 내가 사흘 안에 그것을 일으킬 것이다.”","20":"유대인들이 말했다. “이 성전은 사십육 년 동안 지었는데, 당신이 사흘 만에 그것을 일으키겠다는 말입니까?”","21":"그러나 그분은 자기 몸의 성전을 두고 말씀하신 것이었다.","22":"그러므로 그분이 죽은 사람들 가운데서 일으켜지신 뒤에 제자들은 그분이 이 말씀을 하셨던 것을 기억하였고, 성경과 예수님께서 하신 말씀을 믿었다.","23":"예수님께서 유월절 명절 동안 예루살렘에 계실 때 많은 사람이 그분이 행하시는 표적들을 보고 그분의 이름을 믿었다.","24":"그러나 예수님 자신은 그들에게 자신을 맡기지 않으셨다. 그분은 모든 사람을 알고 계셨기 때문이다.","25":"또 누구도 사람에 관하여 증언할 필요가 없으셨다. 그분 자신이 사람 속에 무엇이 있는지 알고 계셨기 때문이다."},"3":{"1":"바리새인 가운데 니고데모라는 사람이 있었는데, 그는 유대인의 지도자였다.","2":"그가 밤에 예수님께 와서 말했다. “랍비님, 우리는 선생님께서 하나님께로부터 오신 교사이심을 압니다. 하나님께서 함께하지 않으시면 아무도 선생님이 행하시는 이런 표적들을 행할 수 없기 때문입니다.”","3":"예수님께서 대답하셨다. “진실로 진실로 내가 당신에게 말합니다. 누구든지 위로부터 나지 않으면 하나님의 왕국을 볼 수 없습니다.”","4":"니고데모가 말했다. “사람이 늙었는데 어떻게 태어날 수 있습니까? 다시 어머니의 태 안으로 들어가 태어날 수 있습니까?”","5":"예수님께서 대답하셨다. “진실로 진실로 내가 당신에게 말합니다. 누구든지 물과 영으로 나지 않으면 하나님의 왕국에 들어갈 수 없습니다.”","6":"육체에서 난 것은 육체이고, 영에서 난 것은 영입니다.","7":"내가 당신에게 ‘여러분은 위로부터 나야 합니다’라고 말했다고 놀라지 마십시오.","8":"바람은 원하는 곳으로 불고 당신은 그 소리를 듣지만, 어디서 와서 어디로 가는지 알지 못합니다. 영으로 난 모든 사람도 이와 같습니다.","9":"니고데모가 “어떻게 이런 일들이 있을 수 있습니까?”라고 물었다.","10":"예수님께서 대답하셨다. “당신은 이스라엘의 교사이면서 이런 것들을 알지 못합니까?","11":"진실로 진실로 내가 당신에게 말합니다. 우리는 아는 것을 말하고 본 것을 증언하지만, 여러분은 우리의 증언을 받아들이지 않습니다.","12":"내가 땅의 일들을 말해도 여러분이 믿지 않는다면, 하늘의 일들을 말할 때 어떻게 믿겠습니까?","13":"하늘에서 내려온 사람의 아들 외에는 아무도 하늘에 올라간 적이 없습니다.","14":"모세가 광야에서 뱀을 들어 올린 것처럼, 사람의 아들도 반드시 들어 올려져야 합니다.","15":"그것은 그를 믿는 사람마다 영원한 생명을 얻게 하려는 것입니다.","16":"하나님께서 세상을 이처럼 사랑하셔서 유일한 아들을 주셨으니, 이는 그를 믿는 사람마다 멸망하지 않고 영원한 생명을 얻게 하려는 것입니다.","17":"하나님께서 아들을 세상에 보내신 것은 세상을 심판하려는 것이 아니라, 세상이 그를 통하여 구원받게 하려는 것입니다.","18":"그를 믿는 사람은 심판받지 않지만, 믿지 않는 사람은 이미 심판받았습니다. 하나님의 유일한 아들의 이름을 믿지 않았기 때문입니다.","19":"심판은 이것입니다. 빛이 세상에 왔지만 사람들은 자기들의 행위가 악하므로 빛보다 어둠을 더 사랑했습니다.","20":"악을 행하는 사람마다 빛을 미워하고 빛으로 오지 않습니다. 자기 행위가 드러날까 두려워하기 때문입니다.","21":"그러나 진리를 행하는 사람은 빛으로 옵니다. 이는 자기 행위가 하나님 안에서 이루어진 것임이 나타나게 하려는 것입니다.","22":"그 후 예수님과 제자들이 유대 땅으로 가셨고, 그분은 거기에서 그들과 함께 머무르시며 침례를 주셨다.","23":"요한도 살렘 가까운 애논에서 침례를 주고 있었다. 거기에 물이 많았기 때문이다. 사람들이 와서 침례를 받았다.","24":"그때는 요한이 아직 감옥에 갇히기 전이었다.","25":"요한의 제자들과 한 유대인 사이에 정결 예식에 관한 논쟁이 일어났다.","26":"그들이 요한에게 와서 말했다. “랍비님, 요단강 건너편에서 선생님과 함께 계셨고 선생님이 증언하셨던 그분이 침례를 주고 있는데, 모두가 그분께 가고 있습니다.”","27":"요한이 대답하였다. “하늘에서 주어지지 않으면 사람은 아무것도 받을 수 없습니다.","28":"여러분 자신이 내가 ‘나는 그리스도가 아니라 그분보다 앞서 보내심을 받은 사람이다’라고 말했다는 것을 증언합니다.","29":"신부를 얻는 사람은 신랑입니다. 신랑의 친구는 곁에 서서 그의 음성을 들으며 신랑의 음성 때문에 크게 기뻐합니다. 그러므로 이 기쁨이 내 안에서 충만해졌습니다.","30":"그분은 증가하셔야 하고 나는 감소해야 합니다.","31":"위로부터 오시는 분은 모든 것 위에 계십니다. 땅에서 난 사람은 땅에 속하고 땅의 일을 말합니다. 하늘에서 오시는 분은 모든 것 위에 계십니다.","32":"그분은 자신이 보고 들은 것을 증언하시지만 아무도 그분의 증언을 받아들이지 않습니다.","33":"그분의 증언을 받아들이는 사람은 하나님께서 참되시다는 것을 확증한 것입니다.","34":"하나님께서 보내신 분은 하나님의 말씀들을 말씀하십니다. 하나님께서 영을 한량없이 주시기 때문입니다.","35":"아버지께서는 아들을 사랑하시며 모든 것을 그의 손에 맡기셨습니다.","36":"아들을 믿는 사람에게는 영원한 생명이 있습니다. 그러나 아들에게 순종하지 않는 사람은 생명을 보지 못하고 하나님의 진노가 그 위에 머뭅니다."},"4":{"1":"예수님께서 요한보다 더 많은 제자를 삼아 침례를 주신다는 말을 바리새인들이 들었다는 것을 주님께서 아셨다.","2":"사실 예수님 자신이 침례를 주신 것이 아니라 제자들이 주었다.","3":"그분은 유대를 떠나 다시 갈릴리로 가셨다.","4":"그분은 사마리아를 통과해야 하셨다.","5":"그리하여 야곱이 자기 아들 요셉에게 준 땅 가까이에 있는 수가라는 사마리아의 한 도시에 이르셨다.","6":"거기에 야곱의 우물이 있었다. 예수님께서는 여행으로 피곤하셔서 우물 곁에 그대로 앉으셨다. 때는 대략 여섯째 시간이었다.","7":"한 사마리아 여인이 물을 길으러 왔다. 예수님께서 그녀에게 “나에게 마실 물을 주십시오”라고 말씀하셨다.","8":"그분의 제자들은 먹을 것을 사러 도시로 들어가 있었다.","9":"사마리아 여인이 말했다. “당신은 유대인인데 어떻게 사마리아 여자인 나에게 마실 물을 달라고 합니까?” 유대인들은 사마리아인들과 상종하지 않았기 때문이다.","10":"예수님께서 대답하셨다. “당신이 하나님의 선물과 ‘나에게 마실 물을 달라’고 말하는 이가 누구인지 알았다면, 당신이 그에게 구했을 것이고 그는 당신에게 생수를 주었을 것입니다.”","11":"여인이 말했다. “선생님, 물을 뜰 그릇도 없고 우물은 깊은데, 어디서 그 생수를 얻겠습니까?","12":"우리 조상 야곱이 우리에게 이 우물을 주었고 자신과 아들들과 가축도 여기서 마셨는데, 당신이 그보다 더 큽니까?”","13":"예수님께서 대답하셨다. “이 물을 마시는 사람마다 다시 목마를 것입니다.","14":"그러나 내가 주는 물을 마시는 사람은 영원히 목마르지 않을 것입니다. 내가 주는 물은 그 사람 안에서 영원한 생명으로 솟아나는 샘이 될 것입니다.”","15":"여인이 말했다. “선생님, 그 물을 제게 주셔서 제가 목마르지도 않고 물을 길으러 여기 오지도 않게 해주십시오.”","16":"예수님께서 말씀하셨다. “가서 당신의 남편을 불러 여기로 오십시오.”","17":"여인이 “저는 남편이 없습니다”라고 대답하자 예수님께서 말씀하셨다. “당신이 ‘남편이 없다’고 말한 것은 옳습니다.","18":"당신에게 남편이 다섯 있었고 지금 함께 있는 사람도 당신의 남편이 아니니, 이 말은 참됩니다.”","19":"여인이 말했다. “선생님, 제가 보니 선생님은 예언자이십니다.","20":"우리 조상들은 이 산에서 경배했지만, 당신들 유대인들은 예루살렘이 사람들이 경배해야 하는 곳이라고 말합니다.”","21":"예수님께서 말씀하셨다. “여인이여, 내 말을 믿으십시오. 여러분이 이 산에서도 예루살렘에서도 아버지께 경배하지 않을 때가 옵니다.","22":"여러분은 알지 못하는 것을 경배하지만 우리는 아는 것을 경배합니다. 구원이 유대인들에게서 나오기 때문입니다.","23":"그러나 참된 경배자들이 영과 진리 안에서 아버지께 경배할 때가 오며, 지금이 바로 그때입니다. 아버지께서는 이렇게 경배하는 사람들을 찾고 계십니다.","24":"하나님은 영이십니다. 그러므로 그분께 경배하는 사람들은 영과 진리 안에서 경배해야 합니다.","25":"여인이 말했다. “메시아라고 하는 그리스도께서 오실 것을 압니다. 그분이 오시면 우리에게 모든 것을 알려 주실 것입니다.”","26":"예수님께서 말씀하셨다. “당신에게 말하고 있는 내가 바로 그 사람입니다.”","27":"바로 그때 제자들이 돌아와 예수님께서 여자와 말씀하고 계신 것을 이상히 여겼다. 그러나 “무엇을 원하십니까?” 또는 “왜 그 여자와 말씀하십니까?”라고 묻는 사람은 없었다.","28":"여인은 물항아리를 두고 도시로 들어가 사람들에게 말했다.","29":"“와서 내가 한 모든 일을 말해 준 사람을 보십시오. 이분이 그리스도가 아닐까요?”","30":"사람들이 도시에서 나와 예수님께로 오고 있었다.","31":"그 사이에 제자들이 “랍비님, 드십시오”라고 권했다.","32":"그러나 그분은 말씀하셨다. “나에게는 여러분이 알지 못하는 먹을 음식이 있습니다.”","33":"그러자 제자들이 서로 “누가 그분께 먹을 것을 가져다드렸나?”라고 말했다.","34":"예수님께서 말씀하셨다. “나의 음식은 나를 보내신 분의 뜻을 행하고 그분의 일을 완성하는 것입니다.","35":"여러분은 ‘아직 넉 달이 지나야 추수가 온다’고 말하지 않습니까? 내가 여러분에게 말합니다. 눈을 들어 밭을 보십시오. 이미 희어져 추수할 때가 되었습니다.","36":"추수하는 사람은 품삯을 받고 영원한 생명에 이르는 열매를 모읍니다. 그래서 씨 뿌리는 사람과 추수하는 사람이 함께 기뻐합니다.","37":"‘한 사람은 씨를 뿌리고 다른 사람은 거둔다’는 말이 이 점에서 참됩니다.","38":"나는 여러분이 수고하지 않은 것을 거두도록 보냈습니다. 다른 사람들이 수고했고 여러분은 그들의 수고에 참여했습니다.","39":"그 도시의 많은 사마리아인이 “그분이 내가 한 모든 일을 말해 주셨다”라고 증언한 여인의 말 때문에 예수님을 믿었다.","40":"사마리아인들이 예수님께 와서 자기들과 함께 머물러 달라고 부탁하자, 그분은 거기에서 이틀 머무르셨다.","41":"그리고 훨씬 더 많은 사람이 그분의 말씀 때문에 믿었다.","42":"그들이 여인에게 말했다. “이제 우리가 믿는 것은 당신의 말 때문만이 아닙니다. 우리가 직접 들었고, 이분이 참으로 세상의 구주이심을 압니다.”","43":"이틀 뒤에 예수님께서는 거기를 떠나 갈릴리로 가셨다.","44":"예수님 자신이 예언자가 자기 고향에서는 존경을 받지 못한다고 증언하셨다.","45":"그분이 갈릴리에 오셨을 때 갈릴리 사람들이 그분을 받아들였다. 그들도 명절에 갔기 때문에 그분이 예루살렘 명절에서 행하신 모든 일을 보았기 때문이다.","46":"예수님께서 다시 갈릴리 가나에 오셨는데, 그곳은 전에 물을 포도주로 만드신 곳이었다. 그곳에 왕의 신하 한 사람이 있었고 그의 아들이 가버나움에서 병들어 있었다.","47":"그는 예수님께서 유대에서 갈릴리로 오셨다는 말을 듣고 그분께 와서 내려가 자기 아들을 고쳐 달라고 부탁했다. 그 아이가 죽어가고 있었기 때문이다.","48":"예수님께서 그에게 말씀하셨다. “여러분은 표적들과 놀라운 일들을 보지 않으면 결코 믿지 않을 것입니다.”","49":"왕의 신하가 말했다. “주님, 제 아이가 죽기 전에 내려와 주십시오.”","50":"예수님께서 말씀하셨다. “가십시오. 당신의 아들이 살아 있습니다.” 그 사람은 예수님께서 자기에게 하신 말씀을 믿고 길을 떠났다.","51":"그가 내려가고 있을 때 종들이 그를 만나 그의 아들이 살아 있다고 알려 주었다.","52":"그가 언제부터 좋아졌는지 묻자 그들이 “어제 일곱째 시간에 열이 떠났습니다”라고 대답했다.","53":"그러자 아버지는 예수님께서 “당신의 아들이 살아 있다”라고 말씀하신 바로 그 시간이었다는 것을 알게 되었고, 자신과 온 집안이 믿었다.","54":"이것은 예수님께서 유대에서 갈릴리로 오신 후 행하신 두 번째 표적이었다."},"5":{"1":"그 후에 유대인의 한 명절이 있어 예수님께서 예루살렘으로 올라가셨다.","2":"예루살렘의 양문 곁에는 히브리 말로 베데스다라고 하는 못이 있었고, 거기에는 행각 다섯이 있었다.","3":"그 안에는 눈먼 사람들, 다리 저는 사람들, 몸이 마른 사람들 등 많은 병자들이 누워 있었다.","4":"[본문비평 주 참조]","5":"거기에 삼십팔 년 동안 병을 앓아 온 한 사람이 있었다.","6":"예수님께서 그가 누워 있는 것을 보시고 이미 오랫동안 그렇게 지낸 것을 아시고 그에게 말씀하셨다. “낫기를 원하느냐?”","7":"병자가 대답하였다. “선생님, 물이 움직일 때 저를 못에 넣어 줄 사람이 없습니다. 제가 가는 동안 다른 사람이 저보다 먼저 내려갑니다.”","8":"예수님께서 그에게 말씀하셨다. “일어나 네 자리를 들고 걸어라.”","9":"그 사람은 즉시 나았고 자기 자리를 들고 걸었다. 그날은 안식일이었다.","10":"그러므로 유대인들이 나은 사람에게 말했다. “오늘은 안식일이니 네가 자리를 드는 것은 허락되지 않는다.”","11":"그가 대답하였다. “나를 낫게 하신 분이 나에게 ‘네 자리를 들고 걸어라’라고 말씀하셨습니다.”","12":"그들이 물었다. “너에게 ‘들고 걸어라’라고 말한 사람이 누구냐?”","13":"그러나 고침 받은 사람은 그분이 누구인지 알지 못했다. 그곳에 많은 사람이 있었으므로 예수님께서 자리를 피하셨기 때문이다.","14":"그 후 예수님께서 성전에서 그를 만나 말씀하셨다. “보아라, 네가 나았다. 더 나쁜 일이 네게 일어나지 않도록 더 이상 죄를 짓지 마라.”","15":"그 사람이 가서 자기를 낫게 하신 분이 예수님이라고 유대인들에게 알려 주었다.","16":"이 일 때문에 유대인들은 예수님께서 안식일에 이런 일을 하신다고 하여 그분을 박해하기 시작하였다.","17":"그러나 예수님께서 그들에게 말씀하셨다. “내 아버지께서 지금까지 일하고 계시므로 나도 일한다.”","18":"이 때문에 유대인들은 더욱 그분을 죽이려고 하였다. 그분이 안식일을 어길 뿐 아니라 하나님을 자기 아버지라고 하여 자신을 하나님과 동등하게 두셨기 때문이다.","19":"그러므로 예수님께서 그들에게 대답하셨다. “진실로 진실로 내가 여러분에게 말한다. 아들은 아버지께서 하시는 것을 보지 않고서는 스스로 아무것도 할 수 없다. 아버지께서 하시는 것은 무엇이든 아들도 그와 같이 한다.","20":"아버지께서 아들을 사랑하시고 자신이 하시는 모든 것을 그에게 보여 주시며, 여러분이 놀라도록 이것들보다 더 큰 일들도 그에게 보여 주실 것이다.","21":"아버지께서 죽은 사람들을 일으켜 살리시는 것처럼, 아들도 자기가 원하는 사람들을 살린다.","22":"아버지께서는 아무도 심판하지 않으시고 모든 심판을 아들에게 맡기셨다.","23":"이는 모든 사람이 아버지를 공경하는 것처럼 아들도 공경하게 하려는 것이다. 아들을 공경하지 않는 사람은 그를 보내신 아버지도 공경하지 않는다.","24":"진실로 진실로 내가 여러분에게 말한다. 내 말을 듣고 나를 보내신 분을 믿는 사람은 영원한 생명을 가지고 있으며 심판에 이르지 않고 죽음에서 생명으로 옮겨졌다.","25":"진실로 진실로 내가 여러분에게 말한다. 죽은 사람들이 하나님의 아들의 음성을 들을 때가 오며 지금이 바로 그때이다. 듣는 사람들은 살 것이다.","26":"아버지께서 자기 안에 생명을 가지고 계신 것처럼 아들에게도 자기 안에 생명을 가지게 하셨다.","27":"또 그가 사람의 아들이기 때문에 심판을 행할 권위도 그에게 주셨다.","28":"이 일을 놀랍게 여기지 마라. 무덤 속에 있는 모든 사람이 그의 음성을 들을 때가 오기 때문이다.","29":"선한 일을 행한 사람들은 생명의 부활로, 악한 일을 행한 사람들은 심판의 부활로 나올 것이다.","30":"나는 스스로 아무것도 할 수 없다. 나는 듣는 대로 심판하며, 나의 심판은 의롭다. 내가 내 뜻을 구하지 않고 나를 보내신 분의 뜻을 구하기 때문이다.","31":"내가 나 자신에 관하여 증언한다면 내 증언은 참된 것으로 인정되지 않는다.","32":"나에 관하여 증언하는 다른 분이 계시며, 나는 그분이 나에 관하여 하시는 증언이 참되다는 것을 안다.","33":"여러분이 요한에게 사람들을 보냈고 그는 진리에 관하여 증언하였다.","34":"그러나 나는 사람에게서 오는 증언을 받는 것이 아니다. 다만 여러분이 구원받도록 이 말을 하는 것이다.","35":"그는 타오르며 빛나는 등불이었고, 여러분은 잠시 그의 빛 안에서 기뻐하기를 원하였다.","36":"그러나 나에게는 요한의 증언보다 더 큰 증언이 있다. 아버지께서 내가 완성하도록 주신 일들, 곧 내가 하고 있는 바로 그 일들이 아버지께서 나를 보내셨다는 것을 증언한다.","37":"그리고 나를 보내신 아버지께서 친히 나에 관하여 증언하셨다. 여러분은 어느 때에도 그분의 음성을 듣거나 그분의 모습을 본 적이 없다.","38":"또 그분의 말씀이 여러분 안에 머물러 있지 않다. 그분이 보내신 이를 여러분이 믿지 않기 때문이다.","39":"여러분은 성경 안에 영원한 생명이 있다고 생각하기 때문에 성경을 자세히 살핀다. 바로 그 성경이 나에 관하여 증언한다.","40":"그러나 여러분은 생명을 얻기 위해 나에게 오기를 원하지 않는다.","41":"나는 사람들에게서 영광을 받지 않는다.","42":"그러나 나는 여러분을 안다. 여러분 속에 하나님의 사랑이 없다.","43":"나는 내 아버지의 이름으로 왔지만 여러분은 나를 받아들이지 않는다. 다른 사람이 자기 이름으로 오면 그 사람은 받아들일 것이다.","44":"여러분은 서로에게서 영광을 받으면서 유일하신 하나님께로부터 오는 영광은 구하지 않으니 어떻게 믿을 수 있겠느냐?","45":"내가 아버지 앞에서 여러분을 고발할 것이라고 생각하지 마라. 여러분을 고발하는 이는 여러분이 소망을 두고 있는 모세이다.","46":"여러분이 모세를 믿었다면 나를 믿었을 것이다. 그가 나에 관하여 기록했기 때문이다.","47":"그러나 그의 글을 믿지 않는다면 어떻게 내 말을 믿겠느냐?"},"6":{"1":"그 후 예수님께서 갈릴리 바다, 곧 디베랴 바다 건너편으로 가셨다.","2":"큰 무리가 그분을 따랐는데, 그분이 병든 사람들에게 행하시는 표적들을 보았기 때문이다.","3":"예수님께서 산에 올라가 제자들과 함께 거기에 앉으셨다.","4":"유대인의 명절인 유월절이 가까웠다.","5":"예수님께서 눈을 들어 큰 무리가 자기에게 오는 것을 보시고 빌립에게 말씀하셨다. “우리가 어디서 빵을 사서 이 사람들이 먹게 하겠느냐?”","6":"그분은 빌립을 시험하시려고 이렇게 말씀하셨다. 자신은 무엇을 하실지 알고 계셨기 때문이다.","7":"빌립이 대답하였다. “각 사람이 조금씩 받는다 해도 이백 데나리온어치 빵으로도 충분하지 않습니다.”","8":"제자들 가운데 하나이며 시몬 베드로의 형제인 안드레가 예수님께 말했다.","9":"“여기 보리빵 다섯 개와 작은 물고기 두 마리를 가진 한 소년이 있습니다. 그러나 이렇게 많은 사람에게 이것이 무엇이 되겠습니까?”","10":"예수님께서 말씀하셨다. “사람들을 앉게 하여라.” 그곳에는 풀이 많았다. 사람들이 앉았는데 남자의 수가 약 오천 명이었다.","11":"예수님께서 빵을 들고 감사드리신 후 앉아 있는 사람들에게 나누어 주셨고, 물고기도 그들이 원하는 만큼 나누어 주셨다.","12":"그들이 배부르게 먹었을 때 예수님께서 제자들에게 말씀하셨다. “남은 조각들을 모아 아무것도 잃어버리지 않게 하여라.”","13":"그래서 그들이 모았더니 보리빵 다섯 개를 먹고 남긴 조각들이 열두 바구니에 가득 찼다.","14":"사람들은 예수님께서 행하신 표적을 보고 말했다. “이분은 참으로 세상에 오실 그 예언자이시다.”","15":"예수님께서는 그들이 와서 자기를 억지로 붙잡아 왕으로 삼으려 한다는 것을 아시고 다시 혼자 산으로 물러가셨다.","16":"저녁이 되자 제자들이 바다로 내려갔다.","17":"그들은 배를 타고 바다 건너편 가버나움으로 가고 있었다. 이미 어두워졌지만 예수님께서는 아직 그들에게 오지 않으셨다.","18":"강한 바람이 불어 바다가 거칠어지고 있었다.","19":"제자들이 약 이십오에서 삼십 스타디온쯤 노를 저어 갔을 때 예수님께서 바다 위를 걸어 배 가까이 오시는 것을 보고 두려워하였다.","20":"그러나 그분이 말씀하셨다. “나다. 두려워하지 마라.”","21":"그러자 그들은 기꺼이 그분을 배 안으로 모셔 들였고, 배는 곧 그들이 가려던 땅에 이르렀다.","22":"다음 날 바다 건너편에 서 있던 무리는 그곳에 배가 한 척밖에 없었고 예수님께서 제자들과 함께 그 배에 타지 않으셨으며 제자들만 떠났다는 것을 알았다.","23":"그러나 주님께서 감사드리신 후 사람들이 빵을 먹었던 곳 가까이에 디베랴에서 온 다른 배들이 도착하였다.","24":"무리는 예수님도 제자들도 거기에 없는 것을 보고 배들을 타고 예수님을 찾아 가버나움으로 갔다.","25":"그들이 바다 건너편에서 예수님을 만나 “랍비님, 언제 여기 오셨습니까?”라고 물었다.","26":"예수님께서 대답하셨다. “진실로 진실로 내가 여러분에게 말한다. 여러분이 나를 찾는 것은 표적들을 보았기 때문이 아니라 빵을 먹고 배부르게 되었기 때문이다.","27":"썩어 없어지는 양식을 위해 일하지 말고 영원한 생명에 이르도록 남아 있는 양식을 위해 일하여라. 그 양식은 사람의 아들이 여러분에게 줄 것이다. 아버지 하나님께서 그에게 인치셨기 때문이다.”","28":"그들이 예수님께 말했다. “우리가 하나님의 일들을 하려면 무엇을 해야 합니까?”","29":"예수님께서 대답하셨다. “하나님의 일은 이것이다. 그분이 보내신 이를 여러분이 믿는 것이다.”","30":"그러자 그들이 말했다. “우리가 보고 선생님을 믿도록 무슨 표적을 행하시겠습니까? 무슨 일을 하시겠습니까?","31":"우리 조상들은 광야에서 만나를 먹었습니다. 기록된 대로 ‘그분이 하늘에서 빵을 주어 그들에게 먹게 하셨다’고 하였습니다.”","32":"예수님께서 말씀하셨다. “진실로 진실로 내가 여러분에게 말한다. 하늘에서 그 빵을 여러분에게 준 이는 모세가 아니다. 내 아버지께서 하늘에서 참된 빵을 여러분에게 주신다.","33":"하나님의 빵은 하늘에서 내려와 세상에 생명을 주는 이이기 때문이다.”","34":"그들이 말했다. “주님, 이 빵을 언제나 우리에게 주십시오.”","35":"예수님께서 말씀하셨다. “내가 생명의 빵이다. 나에게 오는 사람은 결코 배고프지 않을 것이고, 나를 믿는 사람은 결코 목마르지 않을 것이다.","36":"그러나 내가 여러분에게 말했듯이 여러분은 나를 보고도 믿지 않는다.","37":"아버지께서 내게 주시는 모든 사람은 내게 올 것이며, 내게 오는 사람을 나는 결코 밖으로 내쫓지 않을 것이다.","38":"내가 하늘에서 내려온 것은 내 뜻을 행하려는 것이 아니라 나를 보내신 분의 뜻을 행하려는 것이다.","39":"나를 보내신 분의 뜻은 이것이다. 그분이 내게 주신 모든 것 가운데 하나도 잃어버리지 않고 마지막 날에 그것을 일으키는 것이다.","40":"내 아버지의 뜻은 이것이다. 아들을 보고 그를 믿는 사람마다 영원한 생명을 가지는 것이다. 그리고 내가 마지막 날에 그를 일으킬 것이다.”","41":"그러자 유대인들이 예수님께서 “나는 하늘에서 내려온 빵이다”라고 말씀하셨기 때문에 그분을 두고 수군거렸다.","42":"그들이 말했다. “이 사람은 요셉의 아들 예수가 아닌가? 우리가 그의 아버지와 어머니를 알고 있는데, 어떻게 그가 ‘내가 하늘에서 내려왔다’고 말하는가?”","43":"예수님께서 대답하셨다. “서로 수군거리지 마라.","44":"나를 보내신 아버지께서 이끌지 않으시면 아무도 나에게 올 수 없다. 그리고 내가 마지막 날에 그를 일으킬 것이다.","45":"예언서에 ‘그들이 모두 하나님께 가르침을 받을 것이다’라고 기록되어 있다. 아버지에게서 듣고 배운 사람마다 나에게 온다.","46":"이는 아버지를 본 사람이 있다는 뜻이 아니다. 하나님께로부터 온 이만 아버지를 보았다.","47":"진실로 진실로 내가 여러분에게 말한다. 믿는 사람에게는 영원한 생명이 있다.","48":"내가 생명의 빵이다.","49":"여러분의 조상들은 광야에서 만나를 먹었지만 죽었다.","50":"그러나 이것은 하늘에서 내려오는 빵이니, 사람이 그것을 먹으면 죽지 않는다.","51":"나는 하늘에서 내려온 살아 있는 빵이다. 누구든지 이 빵을 먹으면 영원히 살 것이다. 내가 세상의 생명을 위해 줄 빵은 나의 육체이다.”","52":"그러자 유대인들이 서로 다투며 말했다. “이 사람이 어떻게 자기 육체를 우리에게 주어 먹게 할 수 있는가?”","53":"예수님께서 말씀하셨다. “진실로 진실로 내가 여러분에게 말한다. 여러분이 사람의 아들의 육체를 먹고 그의 피를 마시지 않으면 여러분 안에 생명이 없다.","54":"내 육체를 먹고 내 피를 마시는 사람에게는 영원한 생명이 있으며, 내가 마지막 날에 그를 일으킬 것이다.","55":"내 육체는 참된 음식이고 내 피는 참된 음료이다.","56":"내 육체를 먹고 내 피를 마시는 사람은 내 안에 머물고 나도 그 안에 머문다.","57":"살아 계신 아버지께서 나를 보내셨고 내가 아버지 때문에 사는 것처럼, 나를 먹는 사람도 나 때문에 살 것이다.","58":"이것은 하늘에서 내려온 빵이다. 조상들이 먹고도 죽은 것과 같지 않다. 이 빵을 먹는 사람은 영원히 살 것이다.”","59":"예수님께서 가버나움의 회당에서 가르치실 때 이 말씀들을 하셨다.","60":"제자들 가운데 많은 사람이 이 말을 듣고 말했다. “이 말씀은 어렵다. 누가 이것을 들을 수 있겠는가?”","61":"예수님께서 제자들이 이 일 때문에 수군거리는 것을 스스로 아시고 말씀하셨다. “이것이 여러분을 걸려 넘어지게 하느냐?","62":"그러면 사람의 아들이 전에 있던 곳으로 올라가는 것을 본다면 어떻게 하겠느냐?","63":"생명을 주는 것은 영이다. 육체는 아무 유익이 없다. 내가 여러분에게 말한 말들은 영이며 생명이다.","64":"그러나 여러분 가운데 믿지 않는 사람들이 있다.” 예수님께서는 처음부터 믿지 않는 사람들이 누구이며 자기를 배반할 사람이 누구인지 알고 계셨다.","65":"또 말씀하셨다. “이 때문에 내가 여러분에게 말하였다. 아버지께로부터 허락되지 않으면 아무도 나에게 올 수 없다.”","66":"이 일 후에 제자들 가운데 많은 사람이 뒤로 물러가 더 이상 그분과 함께 다니지 않았다.","67":"그러므로 예수님께서 열두 제자에게 말씀하셨다. “여러분도 떠나고 싶으냐?”","68":"시몬 베드로가 대답하였다. “주님, 우리가 누구에게 가겠습니까? 주님께 영원한 생명의 말씀들이 있습니다.","69":"우리는 주님께서 하나님의 거룩하신 분이심을 믿었고 알게 되었습니다.”","70":"예수님께서 대답하셨다. “내가 여러분 열둘을 선택하지 않았느냐? 그러나 여러분 가운데 하나는 마귀이다.”","71":"그분은 가룟 시몬의 아들 유다를 두고 말씀하신 것이었다. 그가 열둘 가운데 하나이면서 예수님을 배반할 사람이었기 때문이다."}};
+const ALT={"believe": "trust · have faith in · rely on · put one’s trust in", "life": "living · vitality · true life · fullness of life", "word": "message · saying · utterance · expression", "light": "illumination · radiance · brightness · revelation", "truth": "reality · truthfulness · what is true · genuineness", "love": "cherish · care for · set one’s love on · value deeply", "remain": "abide · stay · continue · dwell", "worship": "bow in reverence · pay homage · adore · render worship", "sign": "sign-act · token · indication · miraculous sign", "know": "recognize · understand · perceive · be acquainted with", "receive": "accept · welcome · take in · embrace", "glory": "splendor · honor · majesty · radiant glory", "grace": "favor · gracious gift · kindness · generous favor", "Spirit": "spirit · breath · wind · Spirit", "water": "water · living water · spring water · life-giving water", "save": "rescue · deliver · preserve · bring salvation", "follow": "come after · accompany · become a disciple of · follow", "see": "behold · perceive · observe · recognize", "testify": "bear witness · give testimony · attest · affirm", "kingdom": "reign · royal rule · kingship · kingdom"};
+
+const POS_NAMES={'N-':'Noun','V-':'Verb','A-':'Adjective','C-':'Conjunction','D-':'Adverb','I-':'Interjection','P-':'Preposition','RA':'Article','RD':'Demonstrative pronoun','RI':'Interrogative/indefinite pronoun','RP':'Personal pronoun','RR':'Relative pronoun','X-':'Particle'};
+
+const LEXICAL_NOTES={
+ 'ζωοποιεω':{meaning:'give life / make alive',alts:['give life','make alive','bring to life','vivify']},
+ 'εγειρω':{meaning:'raise / rise',alts:['raise','raise up','awaken','cause to rise','resurrect']},
+ 'αναστασις':{meaning:'resurrection',alts:['resurrection','rising','rising again']},
+ 'κριμα':{meaning:'judgment / verdict',alts:['judgment','verdict','sentence','decision']},
+ 'αρτος':{meaning:'bread',alts:['bread','loaf','food']},
+ 'ελκω':{meaning:'draw',alts:['draw','pull','draw toward','attract']},
+ 'τρωγω':{meaning:'eat',alts:['eat','feed on','consume','partake of']},
+ 'φαγω':{meaning:'eat',alts:['eat','consume','partake of']},
+ 'ρημα':{meaning:'spoken word / saying',alts:['word','saying','utterance','spoken message']},
+ 'αιμα':{meaning:'blood',alts:['blood','lifeblood']},
+ 'σκανδαλιζω':{meaning:'cause to stumble / offend',alts:['cause to stumble','offend','trip up','become an obstacle to']},
+ 'σαρξ':{meaning:'flesh',alts:['flesh','human nature','physical nature','bodily existence']},
+ 'ζωη':{meaning:'life',alts:['life','true life','eternal life','fullness of life']},
+ 'λογος':{meaning:'Word',alts:['word','message','expression','utterance','account']},
+ 'θεος':{meaning:'God',alts:['God','deity','the divine One']},
+ 'φως':{meaning:'light',alts:['light','illumination','radiance','revealing light']},
+ 'σκοτια':{meaning:'darkness',alts:['darkness','spiritual darkness','gloom','absence of light']},
+ 'πιστευω':{meaning:'believe / trust',alts:['believe','trust','have faith in','rely on','put one’s trust in']},
+ 'αληθεια':{meaning:'truth',alts:['truth','reality','truthfulness','what is true','genuineness']},
+ 'πνευμα':{meaning:'Spirit / spirit',alts:['Spirit','spirit','breath','wind']},
+ 'αγαπαω':{meaning:'love',alts:['love','cherish','value deeply','set one’s love on']},
+ 'αγαπη':{meaning:'love',alts:['love','affection','devoted love','self-giving love']},
+ 'μενω':{meaning:'remain',alts:['remain','abide','stay','continue','dwell']},
+ 'δοξα':{meaning:'glory',alts:['glory','splendor','honor','majesty','radiance']},
+ 'χαρις':{meaning:'grace',alts:['grace','favor','gracious gift','kindness','generous favor']},
+ 'σημειον':{meaning:'sign',alts:['sign','sign-act','token','indication','miraculous sign']},
+ 'μαρτυρεω':{meaning:'testify',alts:['testify','bear witness','give testimony','attest','affirm']},
+ 'μαρτυρια':{meaning:'testimony',alts:['testimony','witness','evidence','attestation']},
+ 'γινωσκω':{meaning:'know',alts:['know','recognize','understand','perceive','be acquainted with']},
+ 'λαμβανω':{meaning:'receive',alts:['receive','take','accept','welcome','take hold of']},
+ 'προσκυνεω':{meaning:'worship',alts:['worship','bow in reverence','pay homage','adore','render worship']},
+ 'σωζω':{meaning:'save',alts:['save','rescue','deliver','preserve','bring salvation']},
+ 'βασιλεια':{meaning:'kingdom',alts:['kingdom','reign','royal rule','kingship']},
+ 'υιος':{meaning:'son',alts:['son','child','descendant']},
+ 'πατηρ':{meaning:'Father / father',alts:['Father','father','parent']},
+ 'υδωρ':{meaning:'water',alts:['water','living water','spring water','life-giving water']},
+ 'κοσμος':{meaning:'world',alts:['world','human world','created order','world of humanity']},
+ 'κρινω':{meaning:'judge',alts:['judge','pass judgment','decide','evaluate']},
+ 'κριση':{meaning:'judgment',alts:['judgment','decision','condemnation','judicial verdict']},
+ 'γενναω':{meaning:'be born / give birth',alts:['be born','be begotten','give birth','bring forth']},
+ 'ανωθεν':{meaning:'from above',alts:['from above','from heaven','anew','again']},
+ 'αρτος':{meaning:'bread',alts:['bread','food','loaf']},
+ 'εργον':{meaning:'work',alts:['work','deed','action','task']},
+ 'θελημα':{meaning:'will',alts:['will','desire','purpose','intention']},
+ 'σωτηρ':{meaning:'Savior',alts:['Savior','Deliverer','Rescuer']},
+ 'ακολουθεω':{meaning:'follow',alts:['follow','come after','accompany','become a disciple of']},
+ 'βλεπω':{meaning:'see',alts:['see','look at','perceive','notice']},
+ 'οραω':{meaning:'see / behold',alts:['see','behold','perceive','observe','experience']},
+ 'φωνη':{meaning:'voice',alts:['voice','sound','utterance']},
+ 'αμαρτια':{meaning:'sin',alts:['sin','wrongdoing','offense','sinfulness']},
+ 'αμνος':{meaning:'lamb',alts:['lamb','young sheep']},
+ 'δοξαζω':{meaning:'glorify',alts:['glorify','honor','magnify','bring glory to']},
+ 'ναος':{meaning:'sanctuary / temple',alts:['sanctuary','temple','holy place']},
+ 'ιερον':{meaning:'temple complex',alts:['temple','temple complex','sacred precinct']},
+ 'γραφη':{meaning:'Scripture',alts:['Scripture','writing','sacred writing']},
+ 'διδασκαλος':{meaning:'teacher',alts:['teacher','instructor','master']},
+ 'μαθητης':{meaning:'disciple',alts:['disciple','learner','follower','student']},
+ 'αιωνιος':{meaning:'eternal',alts:['eternal','everlasting','age-abiding','without end']},
+ 'εξουσια':{meaning:'authority / right',alts:['authority','right','power','authorization']},
+ 'τεκνον':{meaning:'child',alts:['child','offspring','descendant']},
+ 'μονογενης':{meaning:'unique / only',alts:['unique','one and only','only','only-begotten']},
+ 'πληρωμα':{meaning:'fullness',alts:['fullness','completeness','that which fills']},
+ 'αληθινος':{meaning:'true / genuine',alts:['true','genuine','real','authentic']},
+ 'μεσσιας':{meaning:'Messiah',alts:['Messiah','Anointed One','Christ']},
+ 'χριστος':{meaning:'Christ / Anointed One',alts:['Christ','Messiah','Anointed One']},
+ 'βασιλευς':{meaning:'king',alts:['king','ruler','sovereign']},
+ 'ανθρωπος':{meaning:'human being / person',alts:['person','human being','man','humanity']},
+ 'γυναι':{meaning:'woman',alts:['woman','lady']},
+ 'γυνη':{meaning:'woman / wife',alts:['woman','wife','female']},
+ 'σωμα':{meaning:'body',alts:['body','physical body']},
+ 'αιμα':{meaning:'blood',alts:['blood','bloodline']},
+ 'σπερμα':{meaning:'seed / offspring',alts:['seed','offspring','descendant']},
+ 'χαρα':{meaning:'joy',alts:['joy','gladness','delight','rejoicing']},
+ 'νυμφιος':{meaning:'bridegroom',alts:['bridegroom','groom']},
+ 'νυμφη':{meaning:'bride',alts:['bride','young woman']},
+ 'οργη':{meaning:'wrath',alts:['wrath','anger','indignation','judgmental anger']}
+};
+function cleanStrongDef(x){
+ return (x||'').replace(/:--.*$/,'').replace(/\s+/g,' ').trim();
+}
+function contextualNote(lemma){
+ return LEXICAL_NOTES[lemmaKey(lemma)]||null;
+}
+function showLexicalContext(lemma,strongDef){
+ const ctx=document.getElementById('pcontext'), rend=document.getElementById('prenderings');
+ const note=contextualNote(lemma);
+ const basic=cleanStrongDef(strongDef);
+ if(note){
+   ctx.innerHTML='<b>Meaning in this verse:</b><br>'+escapeHtml(note.meaning);
+   rend.innerHTML='<b>Possible English renderings:</b><br>'+note.alts.map(escapeHtml).join(' · ');
+ }else{
+   const fallback=(basic||lemma).replace(/^to\s+/i,'');
+   ctx.innerHTML='<b>Meaning in this verse:</b><br>'+escapeHtml(fallback);
+   rend.innerHTML='<b>Possible English renderings:</b><br>'+escapeHtml(fallback);
+ }
+}
+
+
+const TEXTUAL_VARIANTS={
+  5:{
+    3:{
+      type:'addition-after-verse',
+      ko:'일부 후대 사본은 이 절 뒤에 “물이 움직이기를 기다렸다”는 취지의 설명을 덧붙입니다.',
+      en:'Some later manuscripts add a phrase about waiting for the water to be stirred.'
+    },
+    4:{
+      type:'missing-main-text',
+      ko:'SBLGNT/MorphGNT 본문에는 5:4가 없습니다. 후대 사본 전통에는 주의 천사가 때때로 못에 내려와 물을 움직였고, 물이 움직인 뒤 먼저 들어간 사람은 어떤 병이든 나았다는 설명이 들어 있습니다.',
+      en:'John 5:4 is not in the SBLGNT/MorphGNT main text. Later manuscript tradition contains an explanation about an angel stirring the water and the first person entering afterward being healed.'
+    }
+  }
+};
+function variantFor(ch,v){return TEXTUAL_VARIANTS[ch]?.[v]||null}
+
+let morphRows=null, currentChapter=1, popupWord=null;
+
+function cleanMarks(t){return t.replace(/[⸀⸂⸃]/g,'').trim()}
+function splitLine(line){
+  const p=line.trim().split(/\s+/);
+  if(p.length<7)return null;
+  return {bcv:p[0],pos:p[1],parse:p[2],text:cleanMarks(p[3]),word:p[4],norm:p[5],lemma:p.slice(6).join(' ')};
+}
+async function getMorph(){
+  if(morphRows)return morphRows;
+  const r=await fetch(MORPH_URL);
+  if(!r.ok)throw new Error('MorphGNT load failed');
+  const txt=await r.text();
+  morphRows=txt.split(/\r?\n/).map(splitLine).filter(Boolean);
+  return morphRows;
+}
+function chapterVerse(row){
+  return {ch:+row.bcv.slice(2,4),v:+row.bcv.slice(4,6)};
+}
+function cls(row){
+  const lk=lemmaKey(row.lemma);
+  if(LIFE_LEMMAS.has(row.lemma)||lk==='ζωη'||lk==='ζαω'||lk==='ζωοποιεω')return 'life';
+  if(row.pos==='N-')return 'noun';
+  if(row.pos==='V-')return 'verb';
+  return '';
+}
+function escapeHtml(x){return x.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function wordSpan(row){
+  let c=cls(row);
+  const nk=lemmaKey(row.word);
+  if(/^(ζωη|ζωην|ζωης|ζωη$|ζαω|ζη|ζησει|ζων|ζωντος|ζωοποι)/.test(nk))c='life';
+  const data=`data-word="${escapeHtml(row.word)}" data-lemma="${escapeHtml(row.lemma)}" data-pos="${escapeHtml(row.pos)}" data-parse="${escapeHtml(row.parse)}"`;
+  return `<span class="word ${c}" ${data}>${escapeHtml(row.text)}</span>`;
+}
+
+// Practical Korean reading aid, intentionally approximate.
+// The Mingjo-style font is a display choice; lexical popup provides lemma/POS for study.
+const PRON_OVERRIDES={
+ 'εν':'엔','αρχη':'아르케','ην':'엔','ο':'호','η':'헤','οι':'호이',
+ 'λογος':'로고스','λογον':'로곤','λογου':'로구','λογω':'로고',
+ 'και':'카이','προς':'프로스','τον':'톤','θεον':'테온','θεος':'테오스','θεου':'테우',
+ 'το':'토','του':'투','τω':'토','της':'테스','την':'텐','τα':'타','τους':'투스','των':'톤','τοις':'토이스',
+ 'αυτου':'아우투','αυτον':'아우톤','αυτω':'아우토','αυτος':'아우토스','αυτη':'아우테',
+ 'εγω':'에고','συ':'쉬','υμιν':'휘민','ημιν':'헤민','ημων':'헤몬',
+ 'ιησους':'이에수스','ιησουν':'이에순','ιησου':'이에수','ιωαννης':'이오안네스','ιωαννου':'이오안누',
+ 'χριστος':'크리스토스','χριστου':'크리스투','μεσσιας':'메시아스','μεσσιαν':'메시아ν',
+ 'πνευμα':'프뉴마','πνευματος':'프뉴마토스','πνευματι':'프뉴마티',
+ 'ζωη':'조에','ζωην':'조엔','ζωης':'조에스','ζαω':'자오',
+ 'πατηρ':'파테르','πατρος':'파트로스','πατερα':'파테라',
+ 'υιος':'휘오스','υιου':'휘우','υιον':'휘온',
+ 'αμην':'아멘','γαρ':'가르','δε':'데','ου':'우','ουκ':'우크','ουχ':'우크',
+ 'εις':'에이스','εκ':'에크','εξ':'엑스','δια':'디아','μετα':'메타','περι':'페리','υπερ':'휘페르',
+ 'εστιν':'에스틴','εστι':'에스티','ειμι':'에이미','ει':'에이'
+};
+function stripGreekMarks(x){
+ return x.normalize('NFD').replace(/[\u0300-\u036f]/g,'').normalize('NFC').toLowerCase();
+}
+function hasRoughBreathing(x){
+ return x.normalize('NFD').includes('\u0314');
+}
+const JAMO_I={'g':0,'k':15,'d':3,'t':16,'b':7,'p':17,'s':9,'z':12,'m':6,'n':2,'r':5,'l':5,'h':18,'th':16,'ph':17,'kh':15};
+const JAMO_V={'a':0,'e':5,'i':20,'o':8,'u':13,'y':17};
+const JAMO_F={'n':4,'m':16,'l':8,'g':1,'k':1,'d':7,'t':7,'b':17,'p':17};
+function hangul(on,vow,fin=''){
+ const oi=on?JAMO_I[on]:11, vi=JAMO_V[vow], fi=fin?(JAMO_F[fin]||0):0;
+ if(oi===undefined||vi===undefined)return '';
+ return String.fromCharCode(0xAC00+(oi*21+vi)*28+fi);
+}
+function romanTokens(norm){
+ const reps=[['αι','AI'],['ει','EI'],['οι','OI'],['ου','OU'],['αυ','AU'],['ευ','EU'],['υι','YI'],
+             ['θ','TH'],['φ','PH'],['χ','KH'],['ψ','PS'],['ξ','KS']];
+ let x=norm;
+ for(const [a,b] of reps)x=x.split(a).join(b);
+ const map={'α':'a','ε':'e','η':'e','ι':'i','ο':'o','ω':'o','υ':'y',
+            'β':'b','γ':'g','δ':'d','ζ':'z','κ':'k','λ':'l','μ':'m','ν':'n','π':'p','ρ':'r','σ':'s','ς':'s','τ':'t'};
+ x=[...x].map(c=>map[c]||c).join('');
+ return x.replace(/AI/g,'ai').replace(/EI/g,'ei').replace(/OI/g,'oi').replace(/OU/g,'ou').replace(/AU/g,'au').replace(/EU/g,'eu').replace(/YI/g,'yi')
+         .replace(/TH/g,'th').replace(/PH/g,'ph').replace(/KH/g,'kh').replace(/PS/g,'ps').replace(/KS/g,'ks');
+}
+function genericGreekWord(word){
+ const norm=stripGreekMarks(word).replace(/[^\u0370-\u03ff\u1f00-\u1fff]/g,'');
+ if(!norm)return '';
+ if(PRON_OVERRIDES[norm])return PRON_OVERRIDES[norm];
+ let r=romanTokens(norm), rough=hasRoughBreathing(word);
+ const vowels=['ai','ei','oi','ou','au','eu','yi','a','e','i','o','u','y'];
+ const cons=['th','ph','kh','ps','ks','b','g','d','z','k','l','m','n','p','r','s','t','h'];
+ let toks=[];
+ for(let i=0;i<r.length;){
+   let t=[...vowels,...cons].find(q=>r.startsWith(q,i));
+   if(!t){i++;continue}
+   toks.push(t);i+=t.length;
+ }
+ const isV=t=>vowels.includes(t);
+ let vis=[];toks.forEach((t,i)=>{if(isV(t))vis.push(i)});
+ if(!vis.length)return norm;
+ let out='',start=0;
+ for(let q=0;q<vis.length;q++){
+   const vi=vis[q], next=vis[q+1]??toks.length;
+   let onset=toks.slice(start,vi), between=toks.slice(vi+1,next), coda=[];
+   if(q<vis.length-1 && between.length){
+     const allow=new Set(['pr','pl','br','bl','tr','dr','kr','kl','gr','gl','fr','fl']);
+     const cluster=between.join('');
+     if(between.length===1){ start=vi+1; }
+     else if(allow.has(cluster)){ start=vi+1; }
+     else { coda=[between[0]]; start=vi+2; }
+   }else if(q===vis.length-1){ coda=between; }
+   let onsetText='';
+   if(q===0&&rough)onset=['h',...onset];
+   if(onset.length>1){
+     for(let j=0;j<onset.length-1;j++){
+       const c=onset[j];
+       onsetText += c==='r'||c==='l'?'르':(hangul(c==='th'?'t':c==='ph'?'p':c==='kh'?'k':c,'y')||'');
+     }
+   }
+   let last=onset.length?onset[onset.length-1]:'';
+   last=last==='th'?'t':last==='ph'?'p':last==='kh'?'k':last;
+   let v=toks[vi], vout='';
+   const diph={'ai':['a','이'],'ei':['e','이'],'oi':['o','이'],'ou':['u',''],'au':['a','우'],'eu':['e','우'],'yi':['y','이']};
+   if(diph[v]){
+     const [vv,tail]=diph[v]; vout=hangul(last,vv,coda.length===1&&['n','m'].includes(coda[0])?coda[0]:'')+tail;
+   }else{
+     let vv=v==='y'?'y':v;
+     vout=hangul(last,vv,coda.length===1&&['n','m'].includes(coda[0])?coda[0]:'');
+   }
+   if(coda.length && !(coda.length===1&&['n','m'].includes(coda[0]))){
+     for(const c0 of coda){
+       const c=c0==='th'?'t':c0==='ph'?'p':c0==='kh'?'k':c0;
+       if(c==='s')vout+='스'; else if(c==='r'||c==='l')vout+='르'; else vout+=(hangul(c,'y')||'');
+     }
+   }
+   out+=onsetText+vout;
+ }
+ return out||norm;
+}
+function koApprox(text){
+ return text.split(/\s+/).map(w=>{
+   const lead=(w.match(/^[“‘'"(\[]+/)||[''])[0], tail=(w.match(/[.,·;;:!?ʼ’”')\]]+$/)||[''])[0];
+   const core=w.slice(lead.length,w.length-tail.length);
+   return lead+genericGreekWord(core)+tail;
+ }).join(' ');
+}
+function annotateEnglish(t){
+ let out=t;
+ const keys=Object.keys(ALT).sort((a,b)=>b.length-a.length);
+ for(const key of keys){
+   const re=new RegExp(`\\b${key}\\b`,'gi');
+   out=out.replace(re,m=>`${m} (${ALT[key]})`);
+ }
+ return out;
+}
+async function getEnglish(ch){
+  const r=await fetch(`https://bible-api.com/john%20${ch}?translation=web`);
+  if(!r.ok)throw new Error('English load failed');
+  const j=await r.json(), out={};
+  (j.verses||[]).forEach(x=>out[x.verse]=annotateEnglish(x.text.trim().replace(/\s+/g,' ')));
+  return out;
+}
+async function showChapter(ch){
+ currentChapter=ch;
+ document.getElementById('title').textContent='John '+ch;
+ document.querySelectorAll('.chapter-btn').forEach(b=>b.classList.toggle('active',+b.dataset.ch===ch));
+ const reader=document.getElementById('reader');
+ reader.innerHTML=`<div class="loading">John ${ch}을 불러오는 중…</div>`;
+ try{
+  const [rows,en]=await Promise.all([getMorph(),getEnglish(ch)]);
+  const by={};
+  rows.forEach(r=>{const cv=chapterVerse(r);if(cv.ch===ch)(by[cv.v]??=[]).push(r)});
+  const max=Math.max(...Object.keys(by).map(Number));
+  let h='';
+  for(let v=1;v<=max;v++){
+    const rr=by[v]||[];
+    const variant=variantFor(ch,v);
+
+    if(rr.length===0){
+      h+=`<article class="verse variant">
+        <div class="num"><span>John ${ch}:${v}</span></div>
+        <div class="variant-label">Textual variant</div>
+        <div class="ko">${escapeHtml(variant?.ko||'SBLGNT/MorphGNT 본문에는 이 절 번호에 해당하는 본문이 없습니다. 본문비평상의 절 번호 공백인지 확인이 필요합니다.')}</div>
+        <div class="en">${escapeHtml(variant?.en||'No main-text verse is present here in SBLGNT/MorphGNT; this verse-number gap should be checked as a textual variant.')}</div>
+      </article>`;
+      continue;
+    }
+
+    const greek=rr.map(wordSpan).join(' ');
+    const plain=rr.map(x=>x.text).join(' ');
+    const ko=KOREAN[ch]?.[v]||'';
+    const eng=en[v]||'';
+    h+=`<article class="verse">
+      <div class="num"><span>John ${ch}:${v}</span><button class="verse-speak" onclick="speakEnglish(this)">🔊 English</button></div>
+      <div class="greek">${greek}</div>
+      <div class="pron">(${escapeHtml(koApprox(plain))})</div>
+      <div class="ko">${escapeHtml(ko)}</div>
+      <div class="en">(${eng})</div>
+      ${variant&&variant.type==='addition-after-verse'
+        ? `<div class="variant-note"><span class="variant-label">Textual variant note</span><br>${escapeHtml(variant.ko)}<br><span style="font-family:'Noto Sans',sans-serif">${escapeHtml(variant.en)}</span></div>`
+        : ''}
+    </article>`;
+  }
+  reader.innerHTML=h;
+  history.replaceState(null,'',`#john${ch}`);
+  window.scrollTo(0,0);
+ }catch(e){
+  reader.innerHTML='<div class="error"><b>본문을 불러오지 못했습니다.</b><br>GitHub Pages에서 인터넷 연결 상태로 다시 열어주세요.</div>';
+ }
+}
+document.addEventListener('click',e=>{
+ const w=e.target.closest('.word'); if(!w)return;
+ popupWord=w;
+ document.getElementById('pgreek').textContent=w.dataset.word;
+ document.getElementById('pko').textContent=koApprox(w.dataset.word);
+ document.getElementById('penglish').textContent='';
+ const pos=POS_NAMES[w.dataset.pos]||w.dataset.pos;
+ document.getElementById('ppos').innerHTML=`Part of speech: <span class="${w.classList.contains('life')?'pos-life':w.dataset.pos==='N-'?'pos-n':w.dataset.pos==='V-'?'pos-v':''}">${pos}</span>`;
+ document.getElementById('pparse').textContent='Form: '+w.dataset.parse;
+ document.getElementById('plemma').textContent='Lemma: '+w.dataset.lemma;
+ document.getElementById('popup').classList.add('show');
+ fillStrong(w.dataset.lemma);
+});
+function closePopup(){document.getElementById('popup').classList.remove('show')}
+function getVoice(lang,female=true){
+ const vs=speechSynthesis.getVoices().filter(v=>v.lang&&v.lang.toLowerCase().startsWith(lang));
+ const hint=/female|zira|samantha|victoria|ava|aria|jenny|emma|susan|karen|moira|tessa/i;
+ return (female&&vs.find(v=>hint.test(v.name)))||vs[0]||null;
+}
+function speakEnglish(btn){
+ if(!('speechSynthesis'in window))return;
+ speechSynthesis.cancel();
+ const txt=btn.closest('.verse').querySelector('.en').textContent.replace(/^\(|\)$/g,'');
+ const u=new SpeechSynthesisUtterance(txt);u.lang='en-US';u.rate=.88;u.pitch=1.03;
+ const v=getVoice('en');if(v)u.voice=v;speechSynthesis.speak(u);
+}
+function speakGreekWord(){
+ if(!popupWord||!('speechSynthesis'in window))return;
+ speechSynthesis.cancel();
+ const spoken=genericGreekWord(popupWord.dataset.word);
+ const u=new SpeechSynthesisUtterance(spoken);u.lang='ko-KR';u.rate=.78;u.pitch=1.0;
+ const v=getVoice('ko',false);if(v)u.voice=v;speechSynthesis.speak(u);
+}
+
+function speakChapter(){
+ if(!('speechSynthesis'in window))return;
+ speechSynthesis.cancel();
+ const verses=[...document.querySelectorAll('#reader .verse .en')];
+ const texts=verses.map(x=>x.textContent.replace(/^\(|\)$/g,'').trim()).filter(Boolean);
+ if(!texts.length)return;
+ const btn=document.getElementById('chapterSpeak');
+ let i=0;
+ const voice=getVoice('en');
+ function next(){
+   if(i>=texts.length){btn.textContent='🔊 Read chapter';return}
+   const u=new SpeechSynthesisUtterance(texts[i++]);
+   u.lang='en-US';u.rate=.88;u.pitch=1.03;
+   if(voice)u.voice=voice;
+   btn.textContent=`⏹ Reading ${i}/${texts.length}`;
+   u.onend=next;
+   u.onerror=()=>{btn.textContent='🔊 Read chapter'};
+   speechSynthesis.speak(u);
+ }
+ next();
+}
+
+if('speechSynthesis'in window)speechSynthesis.onvoiceschanged=()=>speechSynthesis.getVoices();
+const start=location.hash.match(/john([1-6])/);showChapter(start?+start[1]:1);
+</script>
+</body>
+</html>
